@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mediate</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+<div class="title">
+    <h1><a href="/">Home</a></h1>
+    {% for i in range(path_arr|length - 1) %}
+    <h2>/</h2><h1><a href="{{ path_arr[:i-1]|join('/') }}">{{ path_arr[i+1] }}</a></h1>{% endfor %}
+</div>
+{% if has_folders %}
+<ul class="folders">
+{% for file in contents %}
+{% if file['isdir'] %}
+    <li><a class="folder" href="{{ path }}/{{ file['name'] }}"><img src="{{ url_for('static', filename='img/folder.png') }}"><div>{{ file['name'] }}</div></a></li>
+{% endif %}
+{% endfor %}
+</ul>
+{% endif %}
+{% if has_videos %}
+<ul class="videos">
+{% for file in contents %}
+{% if not file['isdir'] %}
+    <li>
+        <div class="video" style="background-image: url('{{ path }}/{{ file['name'] }}.jpg');">
+            <a href="{{ path }}/{{ file['name'] }}" class="play-option watch"><img src="{{ url_for('static', filename='img/watch.png') }}">Watch</a>
+            <span class="play-option cast"><img src="
+                {% if casts|length == 0 %}{{ url_for('static', filename='img/cast.png') }}{% else %}{{ url_for('static', filename='img/cast_connected.png') }}{% endif %}">Cast
+                <ul>
+                {% for cast in casts %}
+                    <li><a href="{{ path }}/{{ file['name'] }}?cast=yes&device={{ cast }}">{{ cast }}</a></li>
+                {% endfor %}
+                {% if casts|length == 0 %}
+                    <li><div>No Chromecasts</div></li>
+                {% endif %}</ul>
+            </span>
+            <a href="{{ raw_url }}{{ path }}/{{ file['name'] }}" class="play-option download"><img src="{{ url_for('static', filename='img/download.png') }}">Download</a>
+            <div class="video-title">{{ file['name'] }}</div>
+        </div>
+    </li>
+{% endif %}
+{% endfor %}
+{% endif %}
+</ul>
+<script>
+function is_touch_device() {
+  return 'ontouchstart' in window
+      || navigator.maxTouchPoints;
+}
+
+if (is_touch_device()) {
+    $('.video').on('click', function() {
+        var isActive = $(this).hasClass('active');
+        $('.active').removeClass('active');
+        if (!isActive) {
+            $(this).addClass('active');
+        }
+    });
+
+    $('.play-option.cast').on('click', function() {
+        var isActive = $(this).hasClass('active');
+        $('.active').removeClass('active');
+        if (isActive) {
+            $(this).parent().addClass('active');
+        } else {
+            $(this).addClass('active');
+        }
+    })
+}
+</script>
+</body>
+</html>

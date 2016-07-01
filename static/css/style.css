@@ -1,0 +1,211 @@
+* {
+	box-sizing: border-box;
+	font-family: "Roboto Condensed", "Roboto", sans-serif;
+	transition: all 0.125s ease;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	min-height: calc(100% - 1rem);
+}
+
+.title {
+	vertical-align: center;
+}
+
+h1 {
+	display: inline;
+	font-weight: 100;
+	font-size: 1.5rem;
+}
+
+h1.cast-title {
+	display: block;
+}
+
+h2 {
+	display: inline;
+	font-weight: 100;
+	font-size: 1rem;
+}
+
+h3 {
+	font-weight: 100;
+}
+
+a {
+	display: inline-block;
+	text-decoration: none;
+	color: #333;
+	border-radius: 0.25rem;
+	padding: 0.25rem 0.5rem;
+}
+
+a:hover {
+	background-color: rgba(0, 0, 0, 0.125);
+}
+
+li {
+	list-style: none;
+}
+
+.folder {
+	width: 100%;
+}
+
+.folder img {
+	width: 36px;
+	height: 36px;
+	float: left;
+}
+.folder div {
+	float: left;
+	padding: 0.5rem;
+	max-width: calc(100% - 1rem - 36px);
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.videos li {
+	float: left;
+}
+
+li .video {
+	width: 256px;
+	height: 144px;
+	margin: 1rem;
+	background-size: 100% 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 0.25rem;
+	position: relative;
+	padding: 0;
+}
+
+li .video:hover, li .video.active {
+	background-size: 125% 125%;	
+}
+
+.video-title {
+	display: block;
+	width: 256px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	background: rgba(255, 255, 255, 0.75);
+	border-radius: 0 0 0.25rem 0.25rem;
+	padding: 0.25rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.play-option {
+	width: 64px;
+	height: 64px;
+	text-align: center;
+	font-size: 0.75rem;
+	background-color: rgba(255, 255, 255, 0.25);
+	padding: 4px 8px;
+	border-radius: 0.25rem;
+	display: block;
+	position: absolute;
+	top: 2rem;
+	visibility: hidden;
+}
+
+.play-option img {
+	width: 36px;
+	height: 36px;
+}
+
+.video:hover .play-option, .video.active .play-option {
+	visibility: visible;
+}
+
+.play-option:hover, .play-option.active {
+	background-color: rgba(255, 255, 255, 0.75);
+}
+
+.play-option.watch {
+	left: 28px;
+}
+
+.play-option.cast {
+	left: 96px;
+}
+
+.play-option.download {
+	left: 164px;
+}
+
+.play-option ul {
+	visibility: hidden;
+	position: absolute;
+	top: 4rem;
+	left: 0;
+	padding: 0.25rem;
+	background-color: #eee;
+	width: 132px;
+	border-radius: 0.25rem;
+	z-index: 1;
+}
+
+.play-option ul li {
+	width: 100%;
+	text-align: left;
+}
+
+.play-option ul li div {
+	padding: 4px 8px;
+}
+
+.play-option ul li a {
+	width: 100%;
+}
+
+.play-option:hover ul, .play-option.active ul {
+	visibility: visible;
+}
+
+.watch-cast img {
+	width: 36px;
+	height: 36px;
+}
+
+video {
+	width: 100%;
+}
+
+.control-container * {
+	float: left;
+}
+
+.control {
+	width: 24px;
+	height: 24px;
+	border-radius: 0.25rem;
+}
+
+.control:hover {
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.control:active {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.control:focus {
+	outline: none;
+}
+
+.seek {
+	height: 24px;
+	width: calc(100% - 112px);
+	margin: 0 0.5rem;
+}
+

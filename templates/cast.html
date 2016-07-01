@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mediate</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css') }}">
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+<div class="title">
+    <h1><a href="/">Home</a></h1>
+    {% for i in range(path_arr|length) %}
+    <h2>/</h2><h1><a href="/{{ path_arr[:i+1]|join('/') }}{% if i == path_arr|length - 1 %}?cast=yes&device={{ device }}{% endif %}">{{ path_arr[i] }}</a></h1>{% endfor %}
+</div>
+<div class="control-container">
+    <input type="image" src="{{ url_for('static', filename='img/play.png') }}" class="playpause control" onclick="playpause()" />
+    <input type="image" src="{{ url_for('static', filename='img/stop.png') }}" class="stop control" onclick="stop()" />
+    <span class="time">00:00</span>
+    <input type="range" class="seek" min="0" max="100" step="1" />
+</div>
+<script>
+
+$('.seek').val(0);
+
+function setTime(time) {
+    var minutes = ('0' + Math.floor(time / 60)).slice(-2);
+    var seconds = ('0' + (time % 60)).slice(-2);
+    $('.time').html(minutes + ':' + seconds);
+}
+
+$('.seek').on('input', function() {
+    setTime($(this).val());
+});
+
+var isPlaying = false;
+function playpause() {
+    $.ajax('/playpause', {
+        'success': function(data) {
+            if (data === 'pause') {
+                isPlaying = false;
+                $('.playpause').attr('src', '{{ url_for('static', filename='img/play.png') }}');
+            } else {
+                isPlaying = true;
+                $('.playpause').attr('src', '{{ url_for('static', filename='img/pause.png') }}');
+            }
+        }
+    });
+}
+
+function stop() {
+    $.ajax('/stop', {
+        'success': function(data) {
+            isPlaying = false;
+            setTime(0);
+            $('.seek').val(0);
+        }
+    });
+}
+
+setTimeout(function() {
+    $.ajax('/duration', {
+        'success': function(data) {
+            $('.seek').attr('max', data);
+            $('.seek').val(0)
+            setTime(0)
+            isPlaying = true;
+            $('.playpause').attr('src', '{{ url_for('static', filename='img/pause.png') }}');
+        }
+    });
+}, 5000);
+
+setInterval(function() {
+    if (isPlaying) {
+        $('.seek').val(parseInt($('.seek').val())+1);
+        setTime(parseInt($('.seek').val()))
+    }
+}, 1000);
+
+setInterval(function() {
+    $.ajax('/currenttime', {
+        'success': function(data) {
+            $('.seek').val(data);
+            setTime(parseInt(data))
+        }
+    });
+}, 60000)
+
+$('.seek').change(function() {
+    $.ajax('/seek?time=' + $(this).val(), {
+        'success': function(data) {
+            isPlaying = true;
+            $('.playpause').attr('src', '{{ url_for('static', filename='img/pause.png') }}');
+        }
+    });
+})
+
+</script>
+</body>
+</html>
